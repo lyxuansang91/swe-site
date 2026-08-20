@@ -7,7 +7,7 @@
 set -euo pipefail
 cd "$(dirname -- "$0")/.."
 
-LEETCODE_REPO="${LEETCODE_REPO:-https://github.com/lyxuansang91/leetcode-algorithms.git}"
+LEETCODE_REPO="${LEETCODE_REPO:-https://github.com/software-engineer-learning/leetcode-algorithms.git}"
 SWE_REPO="${SWE_REPO:-https://github.com/lyxuansang91/swe.git}"
 
 work="$(mktemp -d)"

@@ -26,7 +26,7 @@ jobs:
           python-version: "3.12"
           cache: pip
 
-      - name: Build site
+      - name: Build site  
         # Clones the content repos and runs mkdocs build into ./site
         run: bash build.sh
 
