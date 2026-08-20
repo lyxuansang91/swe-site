@@ -18,30 +18,25 @@ bash scripts/prepare.sh
 
 Content changes are made in the content repos, not here — re-run `prepare.sh` to pick them up.
 
-## Cloudflare Pages setup (one-time)
+## CI/CD
 
-1. Push this repo to GitHub (`lyxuansang91/swe-site`).
-2. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git** → select `swe-site`.
-3. Build settings:
-   - Build command: `bash build.sh`
-   - Build output directory: `site`
-   - Environment variable: `PYTHON_VERSION` = `3.12`
-4. Deploy, then **Custom domains → Add** → `swe.springlee.dev`. With the `springlee.dev` zone on Cloudflare, the CNAME record is created automatically and TLS is immediate.
+Deploys are done by GitHub Actions (`.github/workflows/deploy.yml`), not by Cloudflare's Git integration — do **not** also connect the repo in the Cloudflare dashboard or every change would build twice. The workflow builds the site and uploads it with `wrangler pages deploy`. It runs on:
 
-## Rebuilding when content repos change
+- pushes to `main` of this repo,
+- `repository_dispatch` events of type `content-updated`, fired by the `trigger-site-deploy.yml` workflows in `leetcode-algorithms` and `swe` on their content pushes,
+- manual runs (`workflow_dispatch`).
 
-Cloudflare only rebuilds on pushes to *this* repo. To rebuild on content pushes, create a **Deploy Hook** (Pages project → Settings → Builds & deployments → Deploy hooks), save its URL as a secret named `CLOUDFLARE_DEPLOY_HOOK_URL` in each content repo, and add this workflow to both repos as `.github/workflows/deploy-site.yml`:
+### One-time setup
 
-```yaml
-name: Trigger site deploy
-on:
-  push:
-    branches: [main]
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - run: curl -sX POST "$DEPLOY_HOOK"
-        env:
-          DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK_URL }}
-```
+1. Create the Pages project (Direct Upload):
+   ```bash
+   npx wrangler pages project create swe-site --production-branch=main
+   ```
+   (or Cloudflare dashboard → Workers & Pages → Create → Pages → *Direct Upload*.)
+2. In **this repo's** GitHub settings → Secrets and variables → Actions, add:
+   - `CLOUDFLARE_ACCOUNT_ID` — dashboard → Workers & Pages → right sidebar.
+   - `CLOUDFLARE_API_TOKEN` — dashboard → My Profile → API Tokens → Create Token → "Edit Cloudflare Workers"-style custom token with **Account → Cloudflare Pages → Edit** permission.
+3. In **each content repo's** GitHub settings, add secret `SITE_DISPATCH_TOKEN`: a fine-grained PAT scoped to `lyxuansang91/swe-site` with **Contents: read and write** permission (that grant is what authorizes `repository_dispatch`).
+4. After the first deploy: Pages project → **Custom domains → Add** → `swe.springlee.dev`. With the `springlee.dev` zone on Cloudflare, the CNAME and TLS are automatic.
+
+Note: `scripts/prepare.sh` clones `lyxuansang91/leetcode-algorithms` and `lyxuansang91/swe` by default; override with `LEETCODE_REPO` / `SWE_REPO` env vars in the deploy workflow if the canonical repos live elsewhere.
