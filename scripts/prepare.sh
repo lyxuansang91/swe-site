@@ -1,32 +1,40 @@
 #!/usr/bin/env bash
-# Pull the two content repos into docs/ and adapt them for MkDocs.
+# Pull the content repos into docs/ and adapt them for MkDocs.
 #
-# Locally: uses the sibling checkouts (../leetcode-algorithms, ../swe).
-# In CI (Cloudflare Pages): clones them from GitHub; override the URLs with
-# LEETCODE_REPO / SWE_REPO env vars if needed.
+# Locally: uses the sibling checkouts (../leetcode-algorithms, ../swe,
+# ../system-design). In CI: clones them from GitHub; override the URLs with
+# LEETCODE_REPO / SWE_REPO / SYSTEM_DESIGN_REPO env vars if needed.
 set -euo pipefail
 cd "$(dirname -- "$0")/.."
 
 LEETCODE_REPO="${LEETCODE_REPO:-https://github.com/software-engineer-learning/leetcode-algorithms.git}"
 SWE_REPO="${SWE_REPO:-https://github.com/lyxuansang91/swe.git}"
+# Upstream third-party notes; point at a fork to control when updates land.
+SYSTEM_DESIGN_REPO="${SYSTEM_DESIGN_REPO:-https://github.com/liquidslr/system-design-notes.git}"
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 
-if [ -d ../leetcode-algorithms ] && [ -d ../swe ]; then
+if [ -d ../leetcode-algorithms ] && [ -d ../swe ] && [ -d ../system-design ]; then
   echo "Using local sibling checkouts"
   lc_src="$(cd ../leetcode-algorithms && pwd)"
   swe_src="$(cd ../swe && pwd)"
+  sd_src="$(cd ../system-design && pwd)"
 else
   echo "Cloning content repos"
   git clone --depth 1 "$LEETCODE_REPO" "$work/leetcode"
   git clone --depth 1 "$SWE_REPO" "$work/swe"
+  git clone --depth 1 "$SYSTEM_DESIGN_REPO" "$work/system-design"
   lc_src="$work/leetcode"
   swe_src="$work/swe"
+  sd_src="$work/system-design"
 fi
 
-rm -rf docs/leetcode docs/swe
-mkdir -p docs/leetcode docs/swe
+# Echo the path of a directory's readme whatever its casing.
+readme_in() { find "$1" -maxdepth 1 -iname 'readme.md' -print -quit; }
+
+rm -rf docs/leetcode docs/swe docs/system-design
+mkdir -p docs/leetcode docs/swe docs/system-design
 
 # --- LeetCode section: difficulty dirs + README + assets ------------------
 for d in Easy Medium Hard; do
@@ -57,4 +65,35 @@ python3 scripts/convert_summary.py "$lc_src/SUMMARY.md" > docs/leetcode/SUMMARY.
 
 python3 scripts/convert_summary.py "$swe_src/SUMMARY.md" > docs/swe/SUMMARY.md
 
-echo "Prepared: $(find docs/leetcode docs/swe -name '*.md' | wc -l | tr -d ' ') markdown pages"
+# --- System Design section: chapter folders with their images --------------
+(cd "$sd_src" && find . -mindepth 1 -maxdepth 1 -type d ! -name '.git' -print0) \
+  | while IFS= read -r -d '' d; do
+      cp -R "$sd_src/${d#./}" docs/system-design/
+    done
+cp "$(readme_in "$sd_src")" docs/system-design/README.md
+
+# Upstream mixes `Readme.md` and `README.md`. Only an exact `README.md` is
+# treated as a directory index by MkDocs, and the chapters' raw
+# <img src="./images/..."> tags resolve only from that index URL — so
+# normalise the casing (via a temp name, for case-insensitive filesystems).
+find docs/system-design -mindepth 2 -maxdepth 2 -iname 'readme.md' -print0 \
+  | while IFS= read -r -d '' f; do
+      if [ "$(basename "$f")" != "README.md" ]; then
+        mv "$f" "$f.tmp" && mv "$f.tmp" "$(dirname "$f")/README.md"
+      fi
+    done
+find docs/system-design -name '.DS_Store' -delete
+
+# Credit the upstream repo at the top of the section overview.
+sd_readme="docs/system-design/README.md"
+{
+  echo '!!! info "Source"'
+  echo '    Mirrored from [liquidslr/system-design-notes](https://github.com/liquidslr/system-design-notes),'
+  echo '    notes on *System Design Interview* (Alex Xu, Vol 1 & 2). All credit to the original authors.'
+  echo
+  cat "$sd_readme"
+} > "$sd_readme.new" && mv "$sd_readme.new" "$sd_readme"
+
+python3 scripts/gen_nav.py docs/system-design > docs/system-design/SUMMARY.md
+
+echo "Prepared: $(find docs/leetcode docs/swe docs/system-design -name '*.md' | wc -l | tr -d ' ') markdown pages"

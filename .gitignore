@@ -1,6 +1,7 @@
 site/
 docs/leetcode/
 docs/swe/
+docs/system-design/
 .venv/
 __pycache__/
 .wrangler/
