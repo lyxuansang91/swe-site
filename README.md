@@ -1,6 +1,6 @@
 # swe-site
 
-MkDocs Material site that publishes [leetcode-algorithms](https://github.com/lyxuansang91/leetcode-algorithms) and [swe](https://github.com/lyxuansang91/swe) as one site at **https://swe.springlee.dev**, deployed on Cloudflare Pages.
+MkDocs Material site that publishes [leetcode-algorithms](https://github.com/software-engineer-learning/leetcode-algorithms) and [swe](https://github.com/lyxuansang91/swe) as one site at **https://swe.springlee.dev**, deployed on Cloudflare Pages.
 
 ## How it works
 
@@ -32,7 +32,7 @@ Deploys are done by GitHub Actions (`.github/workflows/deploy.yml`), not by Clou
    ```bash
    npx wrangler pages project create swe-site --production-branch=main
    ```
-   (or Cloudflare dashboard → Workers & Pages → Create → Pages → *Direct Upload*.)
+   (or Cloudflare dashboard → Workers & Pages → Create → Pages → _Direct Upload_.)
 2. In **this repo's** GitHub settings → Secrets and variables → Actions, add:
    - `CLOUDFLARE_ACCOUNT_ID` — dashboard → Workers & Pages → right sidebar.
    - `CLOUDFLARE_API_TOKEN` — dashboard → My Profile → API Tokens → Create Token → "Edit Cloudflare Workers"-style custom token with **Account → Cloudflare Pages → Edit** permission.
