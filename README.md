@@ -1,6 +1,6 @@
 # swe-site
 
-MkDocs Material site that publishes [leetcode-algorithms](https://github.com/software-engineer-learning/leetcode-algorithms), [swe](https://github.com/lyxuansang91/swe), [system-design-notes](https://github.com/liquidslr/system-design-notes) and [real-interview-questions](https://github.com/software-engineer-learning/real-interview-questions) as one site at **https://swe.springlee.dev**, deployed on Cloudflare Pages.
+MkDocs Material site that publishes [leetcode-algorithms](https://github.com/software-engineer-learning/leetcode-algorithms), [swe](https://github.com/software-engineer-learning/swe), [system-design-notes](https://github.com/software-engineer-learning/system-design-notes) and [real-interview-questions](https://github.com/software-engineer-learning/real-interview-questions) as one site at **https://swe.springlee.dev**, deployed on Cloudflare Pages.
 
 ## How it works
 
@@ -28,7 +28,11 @@ Deploys are done by GitHub Actions (`.github/workflows/deploy.yml`), not by Clou
 - `repository_dispatch` events of type `content-updated`, fired by the `trigger-site-deploy.yml` workflows in `leetcode-algorithms`, `swe` and `real-interview-questions` on their content pushes,
 - manual runs (`workflow_dispatch`).
 
-`system-design` is an upstream third-party repo, so it has no trigger workflow — its updates land on the next deploy from any other cause, or a manual run. To pin or control those updates, fork it and set `SYSTEM_DESIGN_REPO` to the fork.
+`system-design` is a fork of a third-party repo, so it has no trigger workflow — its updates land on the next deploy from any other cause, or a manual run. Upstream changes reach the site only after the fork is synced, which is the point: it keeps third-party edits from landing unreviewed. To sync:
+
+```bash
+gh repo sync software-engineer-learning/system-design-notes --source liquidslr/system-design-notes
+```
 
 ### One-time setup
 
@@ -40,10 +44,10 @@ Deploys are done by GitHub Actions (`.github/workflows/deploy.yml`), not by Clou
 2. In **this repo's** GitHub settings → Secrets and variables → Actions, add:
    - `CLOUDFLARE_ACCOUNT_ID` — dashboard → Workers & Pages → right sidebar.
    - `CLOUDFLARE_API_TOKEN` — dashboard → My Profile → API Tokens → Create Token → "Edit Cloudflare Workers"-style custom token with **Account → Cloudflare Pages → Edit** permission.
-3. In **each content repo's** GitHub settings, add secret `SITE_DISPATCH_TOKEN`: a fine-grained PAT scoped to `lyxuansang91/swe-site` with **Contents: read and write** permission (that grant is what authorizes `repository_dispatch`).
+3. In **each content repo's** GitHub settings, add secret `SITE_DISPATCH_TOKEN`: a fine-grained PAT scoped to `software-engineer-learning/swe-site` with **Contents: read and write** permission (that grant is what authorizes `repository_dispatch`).
 4. After the first deploy: Pages project → **Custom domains → Add** → `swe.springlee.dev`. With the `springlee.dev` zone on Cloudflare, the CNAME and TLS are automatic.
 
-Note: `scripts/prepare.sh` clones `software-engineer-learning/leetcode-algorithms`, `lyxuansang91/swe`, `liquidslr/system-design-notes` and `software-engineer-learning/real-interview-questions` by default; override with `LEETCODE_REPO` / `SWE_REPO` / `SYSTEM_DESIGN_REPO` / `REAL_INTERVIEW_REPO` env vars in the deploy workflow if the canonical repos live elsewhere.
+Note: `scripts/prepare.sh` clones `software-engineer-learning/leetcode-algorithms`, `software-engineer-learning/swe`, `software-engineer-learning/system-design-notes` (our fork of `liquidslr/system-design-notes`) and `software-engineer-learning/real-interview-questions` by default; override with `LEETCODE_REPO` / `SWE_REPO` / `SYSTEM_DESIGN_REPO` / `REAL_INTERVIEW_REPO` env vars in the deploy workflow if the canonical repos live elsewhere.
 
 ## Adding a section
 

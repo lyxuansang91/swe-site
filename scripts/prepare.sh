@@ -9,9 +9,10 @@ set -euo pipefail
 cd "$(dirname -- "$0")/.."
 
 LEETCODE_REPO="${LEETCODE_REPO:-https://github.com/software-engineer-learning/leetcode-algorithms.git}"
-SWE_REPO="${SWE_REPO:-https://github.com/lyxuansang91/swe.git}"
-# Upstream third-party notes; point at a fork to control when updates land.
-SYSTEM_DESIGN_REPO="${SYSTEM_DESIGN_REPO:-https://github.com/liquidslr/system-design-notes.git}"
+SWE_REPO="${SWE_REPO:-https://github.com/software-engineer-learning/swe.git}"
+# Our fork of the third-party notes, so upstream changes land only when the fork
+# is synced. Upstream: https://github.com/liquidslr/system-design-notes
+SYSTEM_DESIGN_REPO="${SYSTEM_DESIGN_REPO:-https://github.com/software-engineer-learning/system-design-notes.git}"
 REAL_INTERVIEW_REPO="${REAL_INTERVIEW_REPO:-https://github.com/software-engineer-learning/real-interview-questions.git}"
 
 work="$(mktemp -d)"
