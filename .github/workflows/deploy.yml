@@ -3,7 +3,8 @@ name: Build and deploy to Cloudflare Pages
 on:
   push:
     branches: [main]
-  # Content repos (leetcode-algorithms, swe) fire this via repository_dispatch
+  # Content repos (leetcode-algorithms, swe, real-interview-questions) fire this
+  # via repository_dispatch
   # from their own trigger-site-deploy workflows.
   repository_dispatch:
     types: [content-updated]

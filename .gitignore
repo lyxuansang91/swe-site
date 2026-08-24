@@ -2,6 +2,7 @@ site/
 docs/leetcode/
 docs/swe/
 docs/system-design/
+docs/real-interview-questions/
 .venv/
 __pycache__/
 .wrangler/
