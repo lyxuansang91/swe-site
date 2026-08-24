@@ -4,6 +4,7 @@ site_description: LeetCode algorithm write-ups and SWE interview prep notes.
 
 theme:
   name: material
+  custom_dir: overrides
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default

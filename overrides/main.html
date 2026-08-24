@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+<!--
+  Theme override for Material. Keep it thin: everything that can live in
+  mkdocs.yml should stay there. This file exists because the Buy Me a Coffee
+  widget is configured through data-* attributes on its own <script> tag, and
+  `extra_javascript` can only emit a bare src.
+-->
+
+{% block scripts %}
+  {{ super() }}
+
+  <!-- Buy Me a Coffee floating button (renders bottom-right, injected by the CDN script). -->
+  <script
+    type="text/javascript"
+    src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+    data-name="bmc-button"
+    data-slug="sanglxuanq"
+    data-color="#BD5FFF"
+    data-emoji=""
+    data-font="Cookie"
+    data-text="Buy me a coffee"
+    data-outline-color="#000000"
+    data-font-color="#ffffff"
+    data-coffee-color="#FFDD00"
+  ></script>
+{% endblock %}
