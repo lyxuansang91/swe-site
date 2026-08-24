@@ -44,7 +44,9 @@ gh repo sync software-engineer-learning/system-design-notes --source liquidslr/s
 2. In **this repo's** GitHub settings → Secrets and variables → Actions, add:
    - `CLOUDFLARE_ACCOUNT_ID` — dashboard → Workers & Pages → right sidebar.
    - `CLOUDFLARE_API_TOKEN` — dashboard → My Profile → API Tokens → Create Token → "Edit Cloudflare Workers"-style custom token with **Account → Cloudflare Pages → Edit** permission.
-3. In **each content repo's** GitHub settings, add secret `SITE_DISPATCH_TOKEN`: a fine-grained PAT scoped to `software-engineer-learning/swe-site` with **Contents: read and write** permission (that grant is what authorizes `repository_dispatch`).
+3. Add an **organization**-level secret `SITE_DISPATCH_TOKEN` (org settings → Secrets and variables → Actions), visible to the content repos. Simplest that works: a classic PAT with the `repo` scope, on an account that can write to `software-engineer-learning/swe-site`. A fine-grained PAT with **Contents: read and write** on `swe-site` also works, but only once the org opts in under Org settings → Personal access tokens. Write access is what authorizes `repository_dispatch`.
+
+   > **Don't use a Cloudflare Pages deploy hook here.** This project is Direct Upload, so a hook has no repo to clone and no build command to run — it re-serves the assets already uploaded and returns `success: true` while the content stays stale. Deploy hooks only build on Git-connected Pages projects, and connecting this repo would make every change build twice.
 4. After the first deploy: Pages project → **Custom domains → Add** → `swe.springlee.dev`. With the `springlee.dev` zone on Cloudflare, the CNAME and TLS are automatic.
 
 Note: `scripts/prepare.sh` clones `software-engineer-learning/leetcode-algorithms`, `software-engineer-learning/swe`, `software-engineer-learning/system-design-notes` (our fork of `liquidslr/system-design-notes`) and `software-engineer-learning/real-interview-questions` by default; override with `LEETCODE_REPO` / `SWE_REPO` / `SYSTEM_DESIGN_REPO` / `REAL_INTERVIEW_REPO` env vars in the deploy workflow if the canonical repos live elsewhere.

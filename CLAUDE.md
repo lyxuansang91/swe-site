@@ -62,6 +62,12 @@ and its `CLAUDE.md` (repo maintenance docs don't belong on the site).
 - Deploys run from GitHub Actions (`.github/workflows/deploy.yml`), **not** from
   Cloudflare's Git integration — don't also connect this repo in the Cloudflare
   dashboard, or every change builds twice.
+- Because of that, a Cloudflare Pages **deploy hook** cannot rebuild this site.
+  It has no repo to clone and no build command to run, so it re-serves the assets
+  already uploaded and returns `success: true` while the content stays stale.
+  Content repos must fire `repository_dispatch: content-updated` at this repo
+  instead — that is the only trigger that runs `build.sh`. If a content push
+  didn't reach the site, check the content repo's trigger workflow first.
 
 ## Verifying a change
 
