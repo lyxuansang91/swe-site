@@ -1,2 +1,7 @@
-mkdocs-material>=9.5
-mkdocs-literate-nav>=0.6
+# MkDocs 2.0 removes the plugin system and rewrites theming, with no migration
+# path — it would break this site outright (Material theme, literate-nav, the
+# custom CSS overrides). Pinned below 2 so an upstream v2 release cannot land
+# in CI unannounced. See https://squidfunk.github.io/mkdocs-material/blog/2026/02/18/mkdocs-2.0/
+mkdocs>=1.6,<2
+mkdocs-material>=9.5,<10
+mkdocs-literate-nav>=0.6,<1
