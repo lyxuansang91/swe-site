@@ -114,4 +114,8 @@ sd_readme="docs/system-design/README.md"
 
 python3 scripts/gen_nav.py docs/system-design > docs/system-design/SUMMARY.md
 
+# --- Normalise GitBook-isms MkDocs cannot parse -----------------------------
+python3 scripts/normalize_fences.py \
+  docs/leetcode docs/swe docs/system-design docs/real-interview-questions
+
 echo "Prepared: $(find docs/leetcode docs/swe docs/system-design docs/real-interview-questions -name '*.md' | wc -l | tr -d ' ') markdown pages"

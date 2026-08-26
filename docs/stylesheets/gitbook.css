@@ -1,0 +1,329 @@
+/* ------------------------------------------------------------------------
+   GitBook-flavoured skin for MkDocs Material.
+   Light, borderless chrome; roomy typography; pill-shaped nav.
+   ------------------------------------------------------------------------ */
+
+:root {
+  --gb-accent:        #3b66f5;
+  --gb-accent-soft:   #eef2ff;
+  --gb-text:          #1c1e21;
+  --gb-text-muted:    #6b7280;
+  --gb-border:        #e6e8eb;
+  --gb-surface:       #ffffff;
+  --gb-surface-alt:   #f6f7f9;
+  --gb-radius:        8px;
+
+  --md-accent-fg-color: var(--gb-accent);
+  --md-typeset-a-color: var(--gb-accent);
+  --md-default-fg-color--light: var(--gb-text-muted);
+  --md-code-bg-color: var(--gb-surface-alt);
+  --md-text-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+[data-md-color-scheme="slate"] {
+  --gb-accent:        #7d9bff;
+  --gb-accent-soft:   #1e2536;
+  --gb-text:          #e6e6e6;
+  --gb-text-muted:    #9aa0a6;
+  --gb-border:        #2b2f36;
+  --gb-surface:       #16181d;
+  --gb-surface-alt:   #1d2026;
+
+  --md-default-bg-color: var(--gb-surface);
+  --md-code-bg-color: var(--gb-surface-alt);
+}
+
+body,
+.md-typeset {
+  color: var(--gb-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.md-grid { max-width: 84rem; }
+
+/* --- Header ------------------------------------------------------------- */
+
+.md-header {
+  background-color: var(--gb-surface);
+  color: var(--gb-text);
+  box-shadow: none;
+  border-bottom: 1px solid var(--gb-border);
+  height: 3.6rem;
+}
+
+.md-header__title {
+  font-weight: 600;
+  font-size: .82rem;
+  letter-spacing: -.01em;
+}
+
+.md-header__button.md-logo { display: none; }
+
+.md-tabs { display: none; }
+
+/* Search: rounded GitBook-style field, always visible outline */
+.md-search__form {
+  background-color: var(--gb-surface-alt);
+  border: 1px solid var(--gb-border);
+  border-radius: var(--gb-radius);
+  height: 1.8rem;
+  box-shadow: none;
+}
+
+.md-search__form:hover { background-color: var(--gb-surface-alt); }
+
+[data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+  background-color: var(--gb-surface);
+  border-color: var(--gb-accent);
+  box-shadow: 0 0 0 3px var(--gb-accent-soft);
+}
+
+.md-search__input::placeholder { color: var(--gb-text-muted); }
+
+.md-search__output {
+  border-radius: var(--gb-radius);
+  border: 1px solid var(--gb-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
+}
+
+/* --- Sidebars ----------------------------------------------------------- */
+
+.md-sidebar { padding-top: 1rem; }
+
+.md-sidebar--primary { border-right: 1px solid var(--gb-border); }
+
+/* Wider than Material's 12.1rem default: this nav goes four levels deep
+   (section > topic > group > page) and GitBook sidebars are roomy. */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar { width: 15rem; }
+}
+
+.md-nav {
+  font-size: .68rem;
+  line-height: 1.5;
+}
+
+.md-nav__title {
+  color: var(--gb-text-muted);
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 0 .6rem .4rem;
+}
+
+.md-nav__item { padding: 0; }
+
+.md-nav__link {
+  border-radius: 6px;
+  color: var(--gb-text-muted);
+  margin: 1px .4rem;
+  padding: .3rem .5rem;
+  transition: background-color 80ms, color 80ms;
+}
+
+.md-nav__link:hover,
+.md-nav__link:focus {
+  background-color: var(--gb-surface-alt);
+  color: var(--gb-text);
+}
+
+.md-nav__link--active,
+.md-nav__link--active:hover,
+.md-nav__link--active:focus,
+.md-nav__item .md-nav__link--active {
+  background-color: var(--gb-accent-soft);
+  color: var(--gb-accent);
+  font-weight: 600;
+}
+
+/* Long entries wrap, as they do in GitBook. Material ellipsises them instead,
+   which at this nav's depth cut labels down to a single character. */
+.md-sidebar--primary .md-nav__link .md-ellipsis {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+/* One indent per level, not two: Material already pads every nested list by
+   .6rem, so the hairline guide replaces that padding rather than adding to it.
+   Stacking both is what squeezed deep pages out of the visible width. */
+.md-nav--primary .md-nav__list { padding-left: 0; }
+
+.md-sidebar--primary .md-nav__item .md-nav {
+  border-left: 1px solid var(--gb-border);
+  margin-left: .75rem;
+  padding-left: 0;
+}
+
+.md-nav__link .md-nav__icon { color: var(--gb-text-muted); }
+
+/* Table of contents (right rail) */
+.md-nav--secondary .md-nav__title {
+  box-shadow: none;
+  background: transparent;
+}
+
+.md-sidebar--secondary .md-nav__link {
+  border-radius: 0;
+  border-left: 2px solid transparent;
+  margin: 0 .4rem;
+  padding: .25rem .5rem;
+}
+
+.md-sidebar--secondary .md-nav__link--active {
+  background: transparent;
+  border-left-color: var(--gb-accent);
+}
+
+/* --- Content ------------------------------------------------------------ */
+
+.md-content__inner {
+  margin-bottom: 3rem;
+  padding-top: 1.4rem;
+}
+
+.md-content__inner > .md-typeset { max-width: 46rem; }
+
+.md-typeset {
+  font-size: .78rem;
+  line-height: 1.75;
+}
+
+.md-typeset h1 {
+  color: var(--gb-text);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  margin-bottom: 1.2rem;
+}
+
+.md-typeset h2 {
+  font-size: 1.25rem;
+  font-weight: 650;
+  letter-spacing: -.015em;
+  margin-top: 2.2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--gb-border);
+}
+
+.md-typeset h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  margin-top: 1.6rem;
+}
+
+.md-typeset h4 { font-size: .85rem; font-weight: 600; }
+
+.md-typeset a { text-decoration: none; }
+.md-typeset a:hover { text-decoration: underline; }
+
+.md-typeset hr { border-bottom-color: var(--gb-border); }
+
+/* Inline + block code */
+.md-typeset code {
+  border-radius: 4px;
+  font-size: .84em;
+  padding: .1em .35em;
+}
+
+.md-typeset pre > code {
+  border-radius: var(--gb-radius);
+  padding: .8rem 1rem;
+}
+
+.md-typeset .highlight,
+.md-typeset pre {
+  border-radius: var(--gb-radius);
+}
+
+.md-typeset .highlighttable {
+  border-radius: var(--gb-radius);
+  overflow: hidden;
+}
+
+/* Blockquote → GitBook "hint" block */
+.md-typeset blockquote {
+  background-color: var(--gb-surface-alt);
+  border-left: 3px solid var(--gb-accent);
+  border-radius: 0 var(--gb-radius) var(--gb-radius) 0;
+  color: var(--gb-text);
+  padding: .7rem 1rem;
+}
+
+/* Admonitions: flat cards, no Material shadow */
+.md-typeset .admonition,
+.md-typeset details {
+  border: 1px solid var(--gb-border);
+  border-left-width: 3px;
+  border-radius: var(--gb-radius);
+  box-shadow: none;
+  font-size: .74rem;
+}
+
+/* Tables */
+.md-typeset table:not([class]) {
+  border: 1px solid var(--gb-border);
+  border-radius: var(--gb-radius);
+  box-shadow: none;
+  font-size: .72rem;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--gb-surface-alt);
+  color: var(--gb-text);
+  font-weight: 600;
+}
+
+.md-typeset table:not([class]) td {
+  border-top: 1px solid var(--gb-border);
+}
+
+/* Prev / next footer links as cards */
+.md-footer {
+  background-color: var(--gb-surface);
+  color: var(--gb-text);
+}
+
+.md-footer__inner {
+  margin: 0 auto;
+  padding: 1rem .4rem 2rem;
+}
+
+.md-footer__link {
+  border: 1px solid var(--gb-border);
+  border-radius: var(--gb-radius);
+  color: var(--gb-text);
+  margin: 0 .4rem;
+  padding: .7rem .9rem;
+  opacity: 1;
+  transition: border-color 80ms, background-color 80ms;
+}
+
+.md-footer__link:hover {
+  background-color: var(--gb-surface-alt);
+  border-color: var(--gb-accent);
+}
+
+.md-footer__direction { color: var(--gb-text-muted); }
+
+.md-footer-meta {
+  background-color: var(--gb-surface);
+  border-top: 1px solid var(--gb-border);
+}
+
+.md-footer-meta .md-footer-copyright,
+.md-footer-meta .md-social__link { color: var(--gb-text-muted); }
+
+/* Keep the Buy Me a Coffee widget clear of the footer edge. */
+#bmc-wbtn { bottom: 1.2rem !important; }
+
+/* Misc */
+.md-typeset .md-button {
+  border-radius: var(--gb-radius);
+  border-width: 1px;
+}
+
+.md-typeset :target { --md-scroll-margin: 4.8rem; }
