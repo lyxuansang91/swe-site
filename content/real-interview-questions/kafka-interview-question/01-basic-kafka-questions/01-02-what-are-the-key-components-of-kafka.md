@@ -1,0 +1,5 @@
+# 1.2. What are the key components of Kafka?
+
+Answer: The key Kafka components are producers, consumers, brokers, topics, partitions, consumer groups, and the cluster controller. Producers send records to topics. A topic is the logical event stream, and each topic is divided into partitions for parallelism. Brokers are the Kafka servers that store partition data and serve reads and writes. Consumers read records and maintain offsets. A consumer group lets multiple consumer instances share the work of consuming partitions. Each partition has a leader replica and, depending on configuration, follower replicas for fault tolerance. Modern Kafka clusters use the Kafka controller in KRaft mode for metadata management; older deployments used ZooKeeper for that role. I would mention this distinction in an interview because ZooKeeper is no longer the normal architecture for new Kafka deployments.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

@@ -1,0 +1,5 @@
+# 2.1. How does Kafka ensure fault tolerance and high availability?
+
+Answer: Kafka provides fault tolerance through replication and distributed placement of partition replicas across brokers. If a broker fails, another in-sync replica can become the partition leader. High availability depends on the replication factor, correct broker placement across failure domains, ISR health, and producer acknowledgement settings. For example, a replication factor of three can provide resilience to broker failures, but only if the replicas are actually spread across independent failure domains and at least one suitable replica remains available. I would also configure min.insync.replicas to protect critical writes, monitor under-replicated partitions, and test broker failure scenarios. Availability is therefore a system property, not just a single Kafka setting. Network topology, storage reliability, capacity headroom, and recovery procedures all matter.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

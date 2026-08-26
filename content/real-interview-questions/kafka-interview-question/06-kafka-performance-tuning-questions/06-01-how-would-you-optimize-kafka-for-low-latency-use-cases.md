@@ -1,0 +1,5 @@
+# 6.1. How would you optimize Kafka for low-latency use cases?
+
+Answer: For low latency, I would first measure end-to-end latency and identify whether the delay comes from the producer, network, broker, consumer fetch, application processing, or downstream calls. Then I would keep payloads small, use efficient serialization, avoid unnecessary batching delay, and use a reasonable linger.ms. I would also ensure brokers have fast storage and sufficient CPU and network headroom. On the consumer side, I would keep processing predictable and avoid long blocking calls in the poll loop. Replication and security add overhead, so the durability and encryption requirements need to be included in the measurement rather than optimized away blindly. The goal is not the smallest possible Kafka setting; it is the lowest business latency that still meets the required reliability and consistency guarantees.
+
+Interview close: I would validate the design with load tests, failure injection, and production-style observability before calling it ready.

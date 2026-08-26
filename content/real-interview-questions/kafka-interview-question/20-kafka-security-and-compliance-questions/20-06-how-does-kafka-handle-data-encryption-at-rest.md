@@ -1,0 +1,5 @@
+# 20.6. How does Kafka handle data encryption at rest?
+
+Answer: Kafka stores partition data on broker disks, so encryption at rest is normally achieved through encrypted disks, encrypted volumes, or a cloud provider's storage encryption rather than by encrypting each Kafka record individually. The advantage is that existing Kafka storage semantics remain unchanged while the underlying files are protected if the disks or snapshots are accessed outside the broker. For sensitive environments, I would also manage encryption keys through a proper key-management system, define access controls, and make sure backups and snapshots are encrypted as well. Encryption at rest does not replace TLS, because TLS protects data while it is moving across the network. A complete design therefore considers encryption in transit, encryption at rest, identity, authorization, key management, and auditability.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

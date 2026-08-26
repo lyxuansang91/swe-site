@@ -1,0 +1,5 @@
+# 13.4. What are the best practices for managing Kafka partitions?
+
+Answer: For partition management, I choose a key that balances distribution while preserving the ordering the business actually needs. I avoid excessive partition counts because every partition has metadata, files, replication, and recovery overhead. I also leave room for expected growth, because increasing partition count later can change partition assignment for new records and may affect ordering assumptions. I monitor hot partitions and skew, especially when keys are highly uneven. Replicas should be distributed across independent failure domains. When moving or adding capacity, I use controlled partition reassignment and monitor the network and disk impact. Partition count is both a performance decision and a data-model decision, so I document the reasoning rather than treating it as a random tuning number.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

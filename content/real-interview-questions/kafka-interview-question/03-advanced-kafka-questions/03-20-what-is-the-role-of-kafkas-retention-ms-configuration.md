@@ -1,0 +1,5 @@
+# 3.20. What is the role of Kafka’s `retention.ms` configuration?
+
+Answer: retention.ms defines a time-based retention boundary for topic data. Kafka uses it during log cleanup to remove old log segments after they exceed the configured retention period, subject to the segment structure and cleanup cycle. It does not mean that one specific record is deleted exactly at the configured millisecond. In practice, data is removed asynchronously when old segments become eligible for cleanup. I choose the value based on how long consumers may need to replay data, disaster recovery objectives, storage budget, and compliance rules. For example, a high-volume application log topic might retain data for a few days, while a business event stream could retain it longer for replay. Retention should be treated as a deliberate data lifecycle policy rather than merely a storage setting.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

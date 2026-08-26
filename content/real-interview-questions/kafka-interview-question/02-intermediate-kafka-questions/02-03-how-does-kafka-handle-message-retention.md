@@ -1,0 +1,5 @@
+# 2.3. How does Kafka handle message retention?
+
+Answer: Kafka retains records according to topic cleanup settings rather than deleting a record immediately when a consumer reads it. The main controls are retention time and retention size. For example, a topic can keep data for seven days or until it reaches a configured byte limit, whichever cleanup condition is reached. Retention is independent for each topic, which allows business-critical events to be kept longer than high-volume telemetry. Kafka cleans old log segments asynchronously, so actual deletion is not necessarily exact to the millisecond. I would choose retention based on replay needs, storage capacity, compliance requirements, and downstream recovery objectives. For compacted topics, the cleanup policy can instead focus on the latest value per key. The design should make the retention contract explicit because consumers cannot replay records that have already been removed.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

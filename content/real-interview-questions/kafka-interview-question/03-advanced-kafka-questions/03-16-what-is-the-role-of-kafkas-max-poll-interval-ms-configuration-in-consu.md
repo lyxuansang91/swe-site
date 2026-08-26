@@ -1,0 +1,5 @@
+# 3.16. What is the role of Kafka’s `max.poll.interval.ms` configuration in consumers?
+
+Answer: max.poll.interval.ms is the maximum time a consumer is allowed to go between successful poll calls before Kafka considers it unresponsive and may trigger a rebalance. If record processing takes too long, the consumer can exceed this interval even though the application is still working. That can cause the partitions to be reassigned and can create duplicate processing when work is retried. I would tune this based on the worst-case processing time or, better, redesign the processing path so the consumer poll loop is not blocked by long-running work. max.poll.records also matters because fetching too many records can make one processing cycle take longer. The right approach is to measure processing latency, bound work per poll, and keep the consumer group stable.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

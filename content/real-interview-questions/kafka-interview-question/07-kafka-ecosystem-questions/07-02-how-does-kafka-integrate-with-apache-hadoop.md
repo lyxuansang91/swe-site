@@ -1,0 +1,5 @@
+# 7.2. How does Kafka integrate with Apache Hadoop?
+
+Answer: Kafka integrates with apache hadoop by acting as the durable event transport between producers, consumers, and the target platform. The exact mechanism depends on whether apache hadoop is a processing engine, database, analytics system, or orchestration tool. A common pattern is Kafka -> connector or consumer -> apache hadoop, with the opposite direction available when apache hadoop is a source of events. I would decide whether to use Kafka Connect, a native Kafka client, or a processing framework based on the amount of custom logic required. I would also think about delivery semantics, retry behavior, schema compatibility, backpressure, ordering, monitoring, and how offsets are committed relative to downstream writes. The key idea is that Kafka decouples ingestion from downstream processing so each system can scale independently.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

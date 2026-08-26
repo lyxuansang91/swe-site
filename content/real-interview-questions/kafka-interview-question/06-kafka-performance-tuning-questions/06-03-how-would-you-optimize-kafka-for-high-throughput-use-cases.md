@@ -1,0 +1,5 @@
+# 6.3. How would you optimize Kafka for high-throughput use cases?
+
+Answer: For high throughput, I optimize around partitions, batching, compression, and horizontal scaling. I choose enough partitions to spread traffic across brokers and consumer instances, then use producer batching and a small amount of linger to reduce request overhead. Compression often reduces network and disk traffic significantly. Consumers should fetch and process records in batches and use enough instances to keep partitions busy. I also make sure the broker disks, network interfaces, and CPU are not the limiting factors. If a single key creates a hot partition, I revisit the partitioning strategy. Finally, I load-test with realistic event sizes and traffic bursts. Kafka performance tuning should be driven by measurable throughput and latency targets, not by copying a generic configuration from another cluster.
+
+Interview close: I would validate the design with load tests, failure injection, and production-style observability before calling it ready.

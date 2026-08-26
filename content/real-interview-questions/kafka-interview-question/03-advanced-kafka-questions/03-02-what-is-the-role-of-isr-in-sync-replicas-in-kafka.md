@@ -1,0 +1,5 @@
+# 3.2. What is the role of ISR (In-Sync Replicas) in Kafka?
+
+Answer: ISR stands for In-Sync Replicas. It is the set of partition replicas that are considered sufficiently caught up with the leader to participate in safe leader election. If a follower falls behind beyond the configured threshold, Kafka can remove it from the ISR. A producer using acks=all relies on the in-sync set and the min.insync.replicas requirement for its durability guarantee. For example, with replication factor three and min.insync.replicas two, Kafka can continue accepting writes while at least two replicas are in sync, but it will reject writes if the number of eligible replicas drops below that threshold. ISR is therefore an important health signal. I would monitor shrinking ISR counts because they can indicate broker, disk, network, or replication problems before the cluster experiences a full failure.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

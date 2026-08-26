@@ -1,0 +1,5 @@
+# 20.8. How does Kafka handle role-based access control (RBAC)?
+
+Answer: Kafka ACLs control which principals are allowed to perform actions on Kafka resources. Depending on the deployment, permissions can be applied to topics, consumer groups, cluster operations, and other resources. For example, a payment service might have permission to write to payments-events and read from its own consumer group, but not write to unrelated topics. In production, I would follow least privilege, use strong authentication such as TLS and SASL, and avoid giving every application cluster-wide access. ACL design should also account for wildcard resources carefully because overly broad permissions can become a security risk. For auditing, I would keep authentication and authorization logs and periodically review permissions. Kafka security is not just encryption; it also includes identity and authorization.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

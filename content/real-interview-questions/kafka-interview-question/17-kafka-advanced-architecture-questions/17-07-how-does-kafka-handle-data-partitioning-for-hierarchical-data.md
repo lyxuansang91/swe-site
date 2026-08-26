@@ -1,0 +1,5 @@
+# 17.7. How does Kafka handle data partitioning for hierarchical data?
+
+Answer: For specialized partitioning such as global, time-series, geospatial, hierarchical, or graph-oriented data, I would start with the access pattern rather than the data model alone. Kafka partitions are physical routing units, so the key should put events that need ordering or locality together without creating a hot partition. For time-series workloads, a stable entity key often gives better distribution than keying only by time, while time-based topics or partitioning strategies can be useful for very large historical streams. For global data, I may partition by entity and use separate regional clusters or replication rather than one partitioning scheme for the entire planet. For geospatial data, a normalized region or geohash can work if locality is a real processing requirement, but I would validate distribution. Graph data is usually partitioned around entity or event ownership, because Kafka itself is not a graph database.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

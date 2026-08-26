@@ -1,0 +1,5 @@
+# 3.9. How does Kafka handle backpressure in consumers?
+
+Answer: Kafka itself does not solve application backpressure automatically; the consumer application must control how quickly it pulls and processes data. A consumer can reduce the number of records fetched or pause partitions while a downstream system catches up. The design should also avoid blocking the poll loop so long that the consumer is considered unhealthy. In a high-load service, I would separate record polling from expensive processing when appropriate, use bounded worker pools, and apply rate limits to downstream calls. The goal is to keep memory bounded while maintaining steady progress. Monitoring lag tells me whether the system is falling behind. If lag grows continuously, I either improve per-record processing, increase consumer parallelism, reduce message size, batch downstream work, or scale the downstream dependency rather than simply allowing unlimited in-memory buffering.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

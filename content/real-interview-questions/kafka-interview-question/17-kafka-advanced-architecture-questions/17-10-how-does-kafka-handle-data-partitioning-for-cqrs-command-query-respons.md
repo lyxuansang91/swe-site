@@ -1,0 +1,5 @@
+# 17.10. How does Kafka handle data partitioning for CQRS (Command Query Responsibility Segregation) systems?
+
+Answer: Kafka can fit naturally into event-sourced and CQRS architectures because it provides a durable sequence of events and supports multiple independent consumers. In event sourcing, the source of truth is the event history, and consumers build current state by replaying those events. In CQRS, commands and queries are often separated, and Kafka can transport domain events from the write side to one or more read-model builders. I would still distinguish Kafka from a business event store: if the system requires a canonical audit history with specific transactional and retention guarantees, the persistence design must be explicit. I would use stable event schemas, immutable event IDs, correct partition keys, replayable consumers, and idempotent projections. The design succeeds when the event contract and consistency boundary are clear, not simply because Kafka is present.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

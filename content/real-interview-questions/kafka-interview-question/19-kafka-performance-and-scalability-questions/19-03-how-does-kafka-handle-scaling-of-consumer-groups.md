@@ -1,0 +1,5 @@
+# 19.3. How does Kafka handle scaling of consumer groups?
+
+Answer: A consumer group scales by adding consumer instances, but the maximum active parallelism is bounded by the number of partitions in the subscribed topics. If a topic has ten partitions, a consumer group can actively process at most ten partitions in parallel for that topic. Adding an eleventh consumer does not create more work units; one instance will typically remain idle. This is why partition planning and consumer scaling must be designed together. I would also consider whether processing is CPU-bound, I/O-bound, or limited by a downstream system. If each partition is heavily loaded and the group needs more parallelism, increasing partitions may help, but that change has operational and ordering implications. Scaling is therefore a balance of partitions, instances, processing time, and downstream capacity.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

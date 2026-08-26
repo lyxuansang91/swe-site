@@ -1,0 +1,5 @@
+# 6.5. What are the key configuration parameters for tuning Kafka consumers?
+
+Answer: For consumers, important settings include max.poll.records, max.poll.interval.ms, session.timeout.ms, heartbeat-related settings, fetch.max.bytes, max.partition.fetch.bytes, fetch.min.bytes, fetch.max.wait.ms, and auto.offset.reset. max.poll.records controls how much work one poll returns, while max.poll.interval.ms protects group membership from consumers that take too long to process a batch. Fetch settings influence how efficiently data is transferred, and auto.offset.reset defines the starting position when no usable offset exists. I tune these from measured processing time, event size, memory, and latency requirements. Consumer configuration should be treated as one system with the processing code; a perfect fetch setting cannot compensate for a downstream database that takes several seconds per record.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

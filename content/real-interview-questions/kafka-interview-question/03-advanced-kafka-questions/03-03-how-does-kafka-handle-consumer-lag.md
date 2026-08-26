@@ -1,0 +1,5 @@
+# 3.3. How does Kafka handle consumer lag?
+
+Answer: Consumer lag is the amount of data a consumer group has not yet processed compared with the latest available offset. A simple way to think about it is: latest offset minus consumer's committed or current position. Lag is not automatically a failure; a temporary spike may be normal during a traffic burst. Persistent growth means the consumers are processing slower than producers are generating events. I would diagnose lag by checking processing time, max.poll settings, downstream database latency, CPU, network, partition distribution, and whether the group has enough consumer instances relative to its partition count. Scaling the consumers only helps when there are unassigned partitions available. If one partition is the bottleneck, adding more consumers beyond the partition count will not help until the topic itself is repartitioned.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

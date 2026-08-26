@@ -1,0 +1,5 @@
+# 4.2. How would you handle a Kafka broker failure?
+
+Answer: I would troubleshoot the problem from the outside in rather than changing random Kafka settings. First I identify the symptom precisely: producer errors, consumer lag, rebalance loops, broker unavailability, disk pressure, or network latency. Then I check cluster health, broker logs, controller or KRaft metadata state, topic and partition state, under-replicated partitions, ISR size, and relevant producer or consumer metrics. After that I trace the application path: DNS and network connectivity, authentication, topic permissions, serialization, offsets, downstream dependencies, and processing time. I also compare the timing of the incident with deployments, traffic spikes, broker failures, storage saturation, or configuration changes. Once I isolate the bottleneck, I change the smallest safe number of variables and validate the effect with metrics. In production, I prefer a reversible mitigation first, followed by a root-cause fix and a post-incident test.
+
+Interview close: I would validate the design with load tests, failure injection, and production-style observability before calling it ready.

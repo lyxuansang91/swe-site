@@ -1,0 +1,5 @@
+# 9.4. What is the role of Kafka’s `authorizer.class.name` configuration?
+
+Answer: authorizer.class.name identifies the authorization component Kafka uses to evaluate whether authenticated principals are allowed to access Kafka resources. It is part of Kafka's security configuration and works with the chosen authentication and permission model. The important conceptual flow is: the client authenticates, Kafka identifies the principal, the authorizer checks the requested operation against the configured rules, and the request is allowed or denied. I would use this in a production design with least privilege, explicit topic and consumer-group permissions, and regular audit or review of access rules. Because authorization configuration can differ between Kafka versions and distributions, I would always verify the exact supported authorizer implementation for the deployed version rather than copy a configuration example blindly.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

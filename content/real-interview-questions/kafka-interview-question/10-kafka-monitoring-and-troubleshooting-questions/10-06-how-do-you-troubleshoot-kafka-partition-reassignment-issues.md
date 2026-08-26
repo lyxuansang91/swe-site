@@ -1,0 +1,5 @@
+# 10.6. How do you troubleshoot Kafka partition reassignment issues?
+
+Answer: Partition reassignment moves partition replicas between brokers. It is commonly used when adding brokers, removing brokers, balancing storage, or changing replication placement. Kafka copies the partition data to the new replica and then updates the replica set according to the reassignment plan. The operation can generate significant disk and network traffic, so in production I would control the movement rate and perform it during a suitable window. I also check whether brokers have enough free disk and whether reassignments will create a temporary performance impact. The key idea is that partition count and partition placement are separate concerns: changing where replicas live is different from increasing the number of partitions. Both operations can affect consumer parallelism and cluster load, but they solve different capacity problems.
+
+Interview close: I would make the trade-off explicit, measure it, and document the operational impact before deploying it.

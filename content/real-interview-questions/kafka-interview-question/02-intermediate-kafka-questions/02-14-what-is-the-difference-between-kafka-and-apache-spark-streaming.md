@@ -1,0 +1,5 @@
+# 2.14. What is the difference between Kafka and Apache Spark Streaming?
+
+Answer: Kafka is primarily the event transport and durable log, while Spark Structured Streaming is primarily a stream-processing engine. Kafka stores and distributes the event stream; Spark Structured Streaming consumes the stream, performs computation, and can write results elsewhere. Flink is especially strong for stateful stream processing, event time, and complex continuous computations. Spark Structured Streaming is often chosen when an organization already has a Spark ecosystem and wants streaming plus batch analytics. Storm is an older stream-processing approach based on topologies and bolts. So I would not normally treat Kafka and Spark Structured Streaming as direct substitutes. A common architecture is Kafka for ingestion and durable buffering, followed by a processing engine for transformations, joins, windows, or analytics.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

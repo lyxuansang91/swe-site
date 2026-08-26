@@ -1,0 +1,5 @@
+# 10.1. What are the key Kafka metrics to monitor in a production environment?
+
+Answer: For production Kafka, I monitor both broker health and application behavior. The core signals are consumer lag, under-replicated partitions, ISR changes, request latency, request rate, broker CPU, disk utilization and I/O latency, network throughput, controller or metadata health, producer error and retry rates, and consumer poll or processing latency. I also monitor topic traffic so an unexpected volume increase is visible. For consumers, lag should be correlated with processing time and partition assignment. For producers, acknowledgement latency and error rates help separate broker problems from application problems. Tooling can include Kafka's JMX metrics, Prometheus and Grafana, vendor dashboards, centralized logs, and command-line admin tools. The most important principle is to build alerts around business impact and trends, not merely around raw infrastructure numbers.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

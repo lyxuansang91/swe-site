@@ -1,0 +1,5 @@
+# 6.4. What are the key configuration parameters for tuning Kafka producers?
+
+Answer: For producers, I focus on a small set of settings with clear trade-offs. acks controls durability acknowledgement, enable.idempotence reduces retry-induced duplicates, batch.size and linger.ms influence batching, compression.type affects network and disk efficiency, delivery.timeout.ms bounds the overall delivery attempt window, retries influence transient error handling, and request-related limits constrain payload sizes and concurrency. I also choose an appropriate partition key and serializer because configuration cannot fix a poor data model. For critical events, I normally prefer strong acknowledgements and idempotence. For ultra-low-latency use cases, I keep batching delay small. For high-throughput pipelines, I allow efficient batching and compression. The correct values depend on workload and should be validated with metrics and load testing.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

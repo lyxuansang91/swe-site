@@ -1,0 +1,5 @@
+# 13.10. What are the best practices for managing Kafka upgrades?
+
+Answer: For Kafka upgrades, I first read the compatibility and upgrade notes for the exact version path. I verify client compatibility, security settings, serialization contracts, and any changes in metadata or storage behavior. I then upgrade in stages rather than changing every broker at once, monitor controller and replication health, and keep rollback or recovery procedures ready. I test the process in a representative non-production cluster with realistic topics and consumer groups. Because an upgrade can affect performance and rebalancing behavior, I compare key metrics before and after. I also document the change and make sure operational tooling and runbooks support the new version. A successful upgrade is one that preserves data safety and service behavior, not simply one that finishes without an error.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

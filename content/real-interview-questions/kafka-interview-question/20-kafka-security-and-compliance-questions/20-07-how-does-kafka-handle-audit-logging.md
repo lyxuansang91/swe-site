@@ -1,0 +1,5 @@
+# 20.7. How does Kafka handle audit logging?
+
+Answer: Kafka audit logging is about recording who accessed or changed Kafka resources, depending on the platform and security stack. I would capture authentication events, authorization decisions where supported, administrative operations, configuration changes, and other security-relevant activity, then send those logs to a controlled monitoring system. Logs should be protected from unauthorized modification and retained according to the organization's policy. For troubleshooting, I also keep operational logs for producer errors, consumer failures, rebalances, broker events, and controller changes. The important point is to distinguish business event data from security audit data. Audit records should provide evidence of access and administrative actions, while Kafka topics carry the application events themselves.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

@@ -1,0 +1,5 @@
+# 1.10. What is Kafka Streams?
+
+Answer: Kafka Streams is a Java library for building applications that process Kafka data continuously. Instead of treating Kafka only as input and output storage, a Streams application can filter, map, join, aggregate, group, window, and enrich events. It can also maintain local state stores and use Kafka topics as changelogs for fault recovery. The important difference from a plain Kafka consumer is that Kafka Streams gives me a higher-level processing model, state management, partition-aware parallelism, and exactly-once processing options. I can build a topology such as orders -> group by customer -> count purchases -> write customer metrics. The application is still just a normal deployable service, so it fits naturally into a microservices environment without introducing a separate processing cluster like some larger stream-processing frameworks require.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

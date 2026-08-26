@@ -1,0 +1,5 @@
+# 16.2. What is the role of Kafka Schema Registry?
+
+Answer: A Schema Registry stores and manages schemas for event data, commonly using formats such as Avro, JSON Schema, or Protobuf. Its value is that producers and consumers can agree on the structure of messages and enforce compatibility rules when schemas evolve. Instead of sending an unstructured JSON blob and hoping every service understands it, the producer uses a registered schema and the consumer can validate and deserialize it. Compatibility settings help prevent a producer from making a change that breaks older consumers. In a microservices architecture, this is especially important because teams deploy independently. I would typically define backward- or forward-compatible evolution rules, use schema IDs with messages, and treat schema changes like API changes. Schema Registry is an ecosystem component; it is separate from Kafka brokers themselves.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

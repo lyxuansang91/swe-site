@@ -1,0 +1,5 @@
+# 20.9. How does Kafka handle multi-tenancy security?
+
+Answer: I would answer this by connecting the Kafka concept to the system requirement rather than giving only a definition. First, I would explain what the setting, feature, or architecture pattern does. Then I would describe why it matters in a distributed system, what trade-off it introduces, and how I would validate it in production. In Kafka, the recurring themes are partitions for scalability and ordering, replication for fault tolerance, offsets for consumer progress and replay, consumer groups for parallel processing, and explicit configuration for durability, latency, and storage. I would finish with a concrete example, such as an order or payment event, and mention the main failure mode I would monitor. That style shows the interviewer I understand not only the Kafka term but also where it matters in a real system.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

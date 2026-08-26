@@ -1,0 +1,5 @@
+# 5.2. How does Kafka handle data locality and network latency?
+
+Answer: Kafka data locality mainly comes from partition placement: the client talks to the broker that is the leader for the relevant partition, and replicas are placed according to the cluster's assignment. Network latency matters because every producer and consumer request crosses a network boundary in a distributed deployment. I reduce unnecessary network cost by keeping clients in the same region or network as the brokers where possible, using appropriate listener configuration, avoiding oversized messages, and using batching and compression. For geo-distributed systems, I usually keep latency-sensitive traffic local and replicate between clusters asynchronously rather than making every application operation depend on intercontinental round trips. The goal is to design the partition and cluster topology so the hot path stays close to the data.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

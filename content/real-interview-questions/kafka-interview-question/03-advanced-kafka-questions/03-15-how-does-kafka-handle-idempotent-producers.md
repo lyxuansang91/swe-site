@@ -1,0 +1,5 @@
+# 3.15. How does Kafka handle idempotent producers?
+
+Answer: Idempotent producers prevent duplicate records caused by producer retries at the Kafka broker level. The producer and broker use sequence numbers for each producer session so a retried request is recognized as a duplicate and not appended twice. This is especially useful when a network timeout causes the producer to retry even though the broker may already have stored the original batch. I generally enable idempotence for important workloads because it improves reliability without requiring the application to implement its own duplicate suppression for every transient network error. Idempotence is not the same as a global exactly-once guarantee. Duplicate business events can still be created if the application intentionally sends the same event twice with different producer sessions or if an external side effect is repeated. Business-level idempotency may still be necessary.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

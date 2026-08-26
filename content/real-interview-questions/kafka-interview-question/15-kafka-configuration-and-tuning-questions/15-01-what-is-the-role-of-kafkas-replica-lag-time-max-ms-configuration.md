@@ -1,0 +1,5 @@
+# 15.1. What is the role of Kafka’s `replica.lag.time.max.ms` configuration?
+
+Answer: replica.lag.time.max.ms is related to how long a follower can remain behind the leader before Kafka considers it out of sync, based on its replication activity. If a follower cannot fetch data within the expected time, it can leave the ISR. This matters because ISR membership influences safe acknowledgement and leader election. A very aggressive value can eject replicas during temporary network or disk slowdowns, while an overly relaxed value can allow a replica to remain stale for too long. I would tune it alongside replication traffic, disk performance, and the actual failure model. The important operational signal is not the property by itself but whether replicas are repeatedly falling out of the ISR, which can indicate broker resource pressure or a network bottleneck.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

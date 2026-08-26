@@ -1,0 +1,5 @@
+# 3.12. What is the role of Kafka’s `linger.ms` configuration in producers?
+
+Answer: linger.ms tells the Kafka producer how long it may wait for additional records before sending a batch, assuming the batch is not already full. A higher value can increase batch size and therefore improve throughput and compression efficiency, but it adds potential latency when traffic is sparse. A lower value favors lower latency but can produce smaller batches. I would explain the trade-off with a concrete example: if an application receives thousands of events per second, a small amount of linger can let the producer fill efficient batches with little practical latency impact. For a user-facing request that expects an immediate event, I would use a much smaller value. The correct setting should be measured using end-to-end latency and throughput rather than tuned only from broker metrics.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

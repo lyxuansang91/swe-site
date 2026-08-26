@@ -1,0 +1,5 @@
+# 17.2. How does Kafka handle data consistency across partitions?
+
+Answer: Kafka provides ordering within each partition, but it does not provide one global transactionally ordered stream across unrelated partitions by default. That is a deliberate trade-off for scalability. When a business process spans multiple partitions, I decide whether the events truly need to be globally ordered. Usually they do not. Instead, I choose a partition key that keeps events for the same entity together, or I use Kafka transactions where atomic output across multiple partitions is required within Kafka. For cross-system consistency, I use patterns such as outbox, idempotent consumers, or transactional integration rather than assuming Kafka alone will synchronize a database and multiple topics. In an interview, I would say consistency is achieved by matching the partitioning and transaction model to the business boundary.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

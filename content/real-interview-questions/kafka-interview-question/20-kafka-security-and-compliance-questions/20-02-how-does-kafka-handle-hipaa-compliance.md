@@ -1,0 +1,5 @@
+# 20.2. How does Kafka handle HIPAA compliance?
+
+Answer: For HIPAA compliance, Kafka itself is only one part of the control environment. I would first classify the data being streamed and define where regulated or personal data is allowed to live. Then I would apply encryption in transit and at rest, least-privilege authentication and authorization, audit logging, controlled retention, access reviews, secrets management, and documented operational procedures. For privacy requirements such as deletion, I would be careful because Kafka's immutable or replay-oriented model can complicate record-level deletion. I would design data minimization and retention deliberately and use external systems or controlled deletion mechanisms when required. Compliance should be mapped to the organization's actual legal and security obligations; Kafka configuration alone cannot certify a system as compliant.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

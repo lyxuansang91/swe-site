@@ -1,0 +1,5 @@
+# 17.1. How does Kafka handle data deduplication in a distributed system?
+
+Answer: Kafka can reduce duplicate writes at the producer level with idempotence, and applications can implement business-level deduplication using event IDs, keys, or state stores. It is important not to confuse these mechanisms. Idempotent producer semantics protect against certain retry-induced duplicate appends from the same producer session. They do not guarantee that an application will never publish the same business event twice. If an external system can retry a request, I usually include a unique event or command ID and make the consumer operation idempotent. A Kafka Streams state store or database unique constraint can help track processed IDs when the business requires it. The design should define the duplicate boundary explicitly: broker-level duplication, consumer reprocessing, and external side-effect duplication are different problems.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

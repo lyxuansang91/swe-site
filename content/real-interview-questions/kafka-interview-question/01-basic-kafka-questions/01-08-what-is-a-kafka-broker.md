@@ -1,0 +1,5 @@
+# 1.8. What is a Kafka Broker?
+
+Answer: A Kafka broker is a Kafka server that stores and serves partition replicas. A cluster is made of multiple brokers, and a topic's partitions are distributed across them. For each partition, one broker is normally the leader for client reads and writes, while follower brokers replicate the data. If a leader fails, Kafka can elect an eligible replica as the new leader. Brokers also participate in metadata management and serve client requests. A key distinction is that a broker does not own an entire topic in isolation; it owns replicas of partitions. This distribution is what allows Kafka to scale horizontally. In production, I would normally deploy multiple brokers across failure domains, configure replication appropriately, and monitor disk, network, CPU, request latency, replication health, and consumer lag.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

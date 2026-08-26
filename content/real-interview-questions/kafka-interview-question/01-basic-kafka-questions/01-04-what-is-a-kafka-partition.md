@@ -1,0 +1,5 @@
+# 1.4. What is a Kafka Partition?
+
+Answer: A Kafka partition is the unit of storage and parallelism inside a topic. Each partition is an ordered, append-only sequence of records identified by offsets. Kafka writes a record to exactly one partition of a topic. The partition is important because ordering is guaranteed within a single partition, not globally across the whole topic. Partitions can be distributed across brokers, and their replicas can provide fault tolerance. A key is often used to choose a partition so related events, such as all events for orderId=123, consistently go to the same partition. More partitions generally increase the possible parallelism, but they also increase metadata, file handles, recovery work, and operational complexity. So I would choose the partition count based on expected throughput, consumers, and future growth rather than simply making it very large.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

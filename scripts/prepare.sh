@@ -1,40 +1,34 @@
 #!/usr/bin/env bash
-# Pull the content repos into docs/ and adapt them for MkDocs.
+# Copy the content sources into docs/ and adapt them for MkDocs.
 #
-# Locally: uses the sibling checkouts (../leetcode-algorithms, ../swe,
-# ../system-design, ../real-interview-questions). In CI: clones them from GitHub;
-# override the URLs with LEETCODE_REPO / SWE_REPO / SYSTEM_DESIGN_REPO /
-# REAL_INTERVIEW_REPO env vars if needed.
+# All four sections now live under content/ in this repo:
+#
+#   content/leetcode-algorithms/    git submodule -> software-engineer-learning/leetcode-algorithms
+#   content/swe/                    tracked here
+#   content/real-interview-questions/  tracked here
+#   content/system-design/          tracked here (vendored from our fork of
+#                                   liquidslr/system-design-notes)
+#
+# Only the LeetCode section is a submodule, so it is the only source that needs
+# fetching: `git submodule update --init` after cloning, or
+# `git submodule update --remote content/leetcode-algorithms` to pull new solutions.
 set -euo pipefail
 cd "$(dirname -- "$0")/.."
 
-LEETCODE_REPO="${LEETCODE_REPO:-https://github.com/software-engineer-learning/leetcode-algorithms.git}"
-SWE_REPO="${SWE_REPO:-https://github.com/software-engineer-learning/swe.git}"
-# Our fork of the third-party notes, so upstream changes land only when the fork
-# is synced. Upstream: https://github.com/liquidslr/system-design-notes
-SYSTEM_DESIGN_REPO="${SYSTEM_DESIGN_REPO:-https://github.com/software-engineer-learning/system-design-notes.git}"
-REAL_INTERVIEW_REPO="${REAL_INTERVIEW_REPO:-https://github.com/software-engineer-learning/real-interview-questions.git}"
+lc_src="content/leetcode-algorithms"
+swe_src="content/swe"
+sd_src="content/system-design"
+riq_src="content/real-interview-questions"
 
-work="$(mktemp -d)"
-trap 'rm -rf "$work"' EXIT
+for d in "$lc_src" "$swe_src" "$sd_src" "$riq_src"; do
+  [ -d "$d" ] || { echo "Missing content source: $d" >&2; exit 1; }
+done
 
-if [ -d ../leetcode-algorithms ] && [ -d ../swe ] && [ -d ../system-design ] \
-   && [ -d ../real-interview-questions ]; then
-  echo "Using local sibling checkouts"
-  lc_src="$(cd ../leetcode-algorithms && pwd)"
-  swe_src="$(cd ../swe && pwd)"
-  sd_src="$(cd ../system-design && pwd)"
-  riq_src="$(cd ../real-interview-questions && pwd)"
-else
-  echo "Cloning content repos"
-  git clone --depth 1 "$LEETCODE_REPO" "$work/leetcode"
-  git clone --depth 1 "$SWE_REPO" "$work/swe"
-  git clone --depth 1 "$SYSTEM_DESIGN_REPO" "$work/system-design"
-  git clone --depth 1 "$REAL_INTERVIEW_REPO" "$work/real-interview-questions"
-  lc_src="$work/leetcode"
-  swe_src="$work/swe"
-  sd_src="$work/system-design"
-  riq_src="$work/real-interview-questions"
+# An uninitialised submodule is an empty directory, which would silently build a
+# LeetCode section with no pages.
+if [ ! -f "$lc_src/SUMMARY.md" ]; then
+  echo "$lc_src is empty — run: git submodule update --init --recursive" >&2
+  exit 1
 fi
 
 # Echo the path of a directory's readme whatever its casing.
@@ -64,8 +58,7 @@ fi
 python3 scripts/convert_summary.py "$lc_src/SUMMARY.md" > docs/leetcode/SUMMARY.md
 
 # --- SWE section: everything except repo plumbing --------------------------
-(cd "$swe_src" && find . -name '*.md' ! -name 'SUMMARY.md' ! -name 'CLAUDE.md' \
-  ! -path './.git/*' -print0) \
+(cd "$swe_src" && find . -name '*.md' ! -name 'SUMMARY.md' ! -name 'CLAUDE.md' -print0) \
   | while IFS= read -r -d '' f; do
       mkdir -p "docs/swe/$(dirname "$f")"
       cp "$swe_src/$f" "docs/swe/$f"
@@ -74,8 +67,7 @@ python3 scripts/convert_summary.py "$lc_src/SUMMARY.md" > docs/leetcode/SUMMARY.
 python3 scripts/convert_summary.py "$swe_src/SUMMARY.md" > docs/swe/SUMMARY.md
 
 # --- Real Interview Questions section: same shape as SWE, minus repo docs ---
-(cd "$riq_src" && find . -name '*.md' ! -name 'SUMMARY.md' ! -name 'CLAUDE.md' \
-  ! -path './.git/*' -print0) \
+(cd "$riq_src" && find . -name '*.md' ! -name 'SUMMARY.md' ! -name 'CLAUDE.md' -print0) \
   | while IFS= read -r -d '' f; do
       mkdir -p "docs/real-interview-questions/$(dirname "$f")"
       cp "$riq_src/$f" "docs/real-interview-questions/$f"
@@ -84,7 +76,7 @@ python3 scripts/convert_summary.py "$swe_src/SUMMARY.md" > docs/swe/SUMMARY.md
 python3 scripts/convert_summary.py "$riq_src/SUMMARY.md" > docs/real-interview-questions/SUMMARY.md
 
 # --- System Design section: chapter folders with their images --------------
-(cd "$sd_src" && find . -mindepth 1 -maxdepth 1 -type d ! -name '.git' -print0) \
+(cd "$sd_src" && find . -mindepth 1 -maxdepth 1 -type d -print0) \
   | while IFS= read -r -d '' d; do
       cp -R "$sd_src/${d#./}" docs/system-design/
     done

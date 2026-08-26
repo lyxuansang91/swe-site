@@ -1,0 +1,5 @@
+# 2.4. What is the difference between a Kafka Topic and a Partition?
+
+Answer: The main difference is that the two concepts solve different layers of the Kafka problem. When I answer this in an interview, I first define each one clearly, then compare their role, execution model, scaling unit, and typical use case. In Kafka, the most important mental model is that storage and transport are organized around topics and partitions, while processing is organized around consumer groups or stream-processing applications. The right choice depends on the business requirement: ordering, replay, throughput, latency, stateful computation, routing, or integration. I would avoid saying one component is simply 'better' because the difference usually represents a deliberate architectural trade-off. I then give a concrete example from an order or payment workflow so the interviewer can see how the concepts behave in practice.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

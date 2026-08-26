@@ -1,0 +1,5 @@
+# 2.5. What is the role of a Kafka Leader and Followers in a Partition?
+
+Answer: For each Kafka partition, one replica is the leader and the other replicas are followers. Clients normally send writes to the leader, and followers fetch the leader's log to replicate it. The leader provides the authoritative ordering for that partition. If the leader fails, Kafka can choose an eligible follower, typically from the in-sync replicas, as the new leader. This model gives Kafka both horizontal distribution and fault tolerance. The important interview concept is that replication is per partition, not per topic as one giant object. A replication factor of three means three replicas of each partition exist, normally spread across brokers. That does not mean three copies sit on one server. It means Kafka can continue serving the partition when a broker fails, assuming an available in-sync replica can take leadership.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

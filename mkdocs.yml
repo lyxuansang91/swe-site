@@ -71,4 +71,4 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/katex@0.16/dist/contrib/auto-render.min.js
   - javascripts/katex.js
 
-repo_url: https://github.com/software-engineer-learning/leetcode-algorithms
+repo_url: https://github.com/software-engineer-learning/swe-site

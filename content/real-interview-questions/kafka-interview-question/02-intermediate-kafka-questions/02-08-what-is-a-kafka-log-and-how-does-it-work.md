@@ -1,0 +1,5 @@
+# 2.8. What is a Kafka Log and how does it work?
+
+Answer: Kafka's log is an append-only sequence of records for each partition. Each new record receives an offset, and consumers read sequentially from their current position. Internally, the partition log is stored in segments on disk so Kafka can roll and clean older segments efficiently. Because the log is append-oriented and consumers do not require Kafka to remove data immediately after reading it, Kafka can serve multiple consumer groups and support replay. The log is the core of Kafka's design: a producer appends, the broker persists and replicates, and consumers pull by offset. In an interview, I would emphasize that Kafka is closer to a distributed commit log than a classic queue. The combination of ordered appends, sequential reads, batching, and partitioning is a major reason Kafka achieves high throughput.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

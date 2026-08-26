@@ -1,0 +1,5 @@
+# 3.14. What is the role of Kafka’s `auto.offset.reset` configuration in consumers?
+
+Answer: An offset is the position of a record within a Kafka partition. Offsets are unique and ordered only within that partition. Consumers use offsets to track their progress, and Kafka stores committed offsets for consumer groups in Kafka's internal offset topic. If a consumer restarts, it can resume from its last committed position instead of starting from the beginning. This is also what makes replay possible: I can deliberately move the consumer group's offset backward and process historical records again, provided the data is still retained. In production, the important point is that offset commits should reflect successfully processed work. Committing too early can cause message loss from the application's point of view; committing too late can cause duplicates after a restart. That is why offset handling is closely tied to delivery semantics.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

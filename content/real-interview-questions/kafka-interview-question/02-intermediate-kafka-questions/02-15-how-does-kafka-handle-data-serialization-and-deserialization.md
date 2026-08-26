@@ -1,0 +1,5 @@
+# 2.15. How does Kafka handle data serialization and deserialization?
+
+Answer: Serialization converts an application's object into bytes before Kafka sends it, while deserialization converts bytes back into an object on the consumer side. Kafka itself stores bytes, so the application and client libraries must agree on the format. Common options include JSON, Avro, Protobuf, and plain strings or byte arrays. The choice affects payload size, compatibility, validation, and evolution. For internal microservices, I prefer a structured schema format with compatibility rules for important event contracts. A common production pattern is to use a Schema Registry so producers and consumers can evolve independently. I also make sure the producer and consumer agree on key and value serializers, because a mismatch can cause deserialization errors and prevent the consumer from processing records.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

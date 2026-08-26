@@ -1,0 +1,5 @@
+# 3.17. How does Kafka handle schema compatibility?
+
+Answer: Schema compatibility is the set of rules that determines whether a new event schema can safely coexist with older or newer producers and consumers. Backward compatibility generally means a new schema can read data written with the previous schema. Forward compatibility focuses on newer readers being able to handle older or earlier data expectations. Full compatibility is stricter. The exact rules depend on the serialization format and registry. In a team environment, I treat an event schema as a public API: adding optional fields is usually safer than removing or changing the meaning of existing fields. I would use compatibility checks in CI or Schema Registry, version breaking contracts deliberately, and deploy consumers before producers when the compatibility model requires it. This prevents independent deployments from turning a harmless field change into a production outage.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

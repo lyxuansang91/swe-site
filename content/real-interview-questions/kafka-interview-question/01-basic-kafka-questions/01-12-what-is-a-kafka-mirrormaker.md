@@ -1,0 +1,5 @@
+# 1.12. What is a Kafka MirrorMaker?
+
+Answer: Kafka MirrorMaker is used to replicate Kafka topics between clusters, commonly across data centers, regions, or environments. MirrorMaker 2 builds on Kafka Connect and provides features such as topic replication, offset translation, and better multi-cluster management. Typical use cases include disaster recovery, migration, and active replication between regions. The main design questions are which topics to replicate, how to avoid replication loops, how much bandwidth is available, and how consumers fail over. I would also distinguish replication from application-level duplication: MirrorMaker moves Kafka data between clusters; it does not make two unrelated applications magically share the same database state. For disaster recovery, I would validate replication lag, recovery procedures, consumer offset behavior, and whether the target cluster can handle the expected workload before calling the design production-ready.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

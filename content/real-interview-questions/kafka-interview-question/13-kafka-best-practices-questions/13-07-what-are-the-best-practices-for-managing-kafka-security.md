@@ -1,0 +1,5 @@
+# 13.7. What are the best practices for managing Kafka security?
+
+Answer: My Kafka security baseline is TLS for protected transport, strong client authentication, least-privilege authorization, secure secret management, regular credential rotation, network segmentation, and auditability. Applications should receive only the topic and consumer-group permissions they need. Administrative credentials should be separate from application credentials. I also protect monitoring and management interfaces, because exposing metrics or admin endpoints can create a serious risk. Security configuration should be tested during deployment so a certificate or ACL change does not unexpectedly break production consumers. Finally, I document how credentials, certificates, and authorization rules are rotated and reviewed because a secure configuration that nobody can maintain will eventually become a weakness.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

@@ -1,0 +1,5 @@
+# 20.5. How does Kafka handle data encryption in transit?
+
+Answer: Kafka can secure traffic in transit with TLS. TLS provides encryption between clients and brokers and can also be used between brokers depending on the deployment. It can additionally support mutual TLS, where both sides authenticate with certificates. In production, I would use certificates issued and rotated through a controlled process, verify hostname or identity settings correctly, and avoid disabling certificate validation for convenience. TLS protects the network path, but it does not decide whether an authenticated client is allowed to read a topic. That is where Kafka authorization and ACLs come in. So I explain the security stack as authentication plus authorization plus encryption in transit, with encryption at rest handled separately by the underlying storage or disk-encryption layer.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

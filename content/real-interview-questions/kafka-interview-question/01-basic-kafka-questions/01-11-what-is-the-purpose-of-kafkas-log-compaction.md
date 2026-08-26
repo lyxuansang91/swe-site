@@ -1,0 +1,5 @@
+# 1.11. What is the purpose of Kafka’s log compaction?
+
+Answer: Kafka log compaction is a cleanup policy that keeps the latest record for each key instead of retaining every historical record forever. For example, if a topic contains customerId=10 with values A, B, and C over time, compaction eventually allows Kafka to retain the latest value C while older versions can be removed. This is useful for state topics such as user profiles, configuration, or materialized state where the latest value is more important than the full history. Compaction does not mean the topic instantly contains only one record per key; cleanup happens asynchronously and tombstone records are used to indicate deletions. In an interview, I would contrast it with time or size based retention: retention answers how long data is kept, while compaction focuses on keeping the latest value for each key.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

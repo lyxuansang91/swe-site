@@ -1,0 +1,5 @@
+# 17.3. How does Kafka handle data replication across multiple data centers?
+
+Answer: Kafka replicates each partition to multiple brokers. One replica is the leader and follower replicas copy the leader's log. The replication factor controls how many replicas exist. Kafka tracks which replicas are in sync, called the ISR. Producer acknowledgement settings determine how much replication confirmation is required before Kafka reports success. With a replication factor of three and an appropriate minimum in-sync replica setting, the cluster can tolerate broker failures without losing committed records, assuming the failed broker is not the only copy considered safe. Replication is not a backup strategy by itself, because operator mistakes or application-level deletes can still propagate. For disaster recovery across regions, I would consider inter-cluster replication as well. The interview message is that replication improves availability and durability by keeping partition copies on different brokers.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

@@ -1,0 +1,5 @@
+# 3.1. How does Kafka achieve high throughput and low latency?
+
+Answer: Kafka achieves high throughput and low latency mainly through a few architectural choices. First, topics are partitioned so reads and writes can be distributed across brokers and consumers. Second, Kafka uses append-oriented sequential writes, batching, and efficient network transfer rather than making one expensive disk operation per message. Third, consumers pull data in batches, which reduces coordination overhead. Compression can lower the amount of data transferred. Replication provides fault tolerance without requiring a separate synchronous database-style transaction for every record. The trade-off is that the system must be designed around partitions, and excessive replication, too many partitions, oversized messages, or hot keys can reduce performance. In an interview I would say Kafka is fast because it minimizes coordination on the hot path while using partitioning and batching to scale work horizontally.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

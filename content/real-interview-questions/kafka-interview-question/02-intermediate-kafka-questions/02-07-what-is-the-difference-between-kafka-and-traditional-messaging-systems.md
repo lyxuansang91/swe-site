@@ -1,0 +1,5 @@
+# 2.7. What is the difference between Kafka and traditional messaging systems like RabbitMQ?
+
+Answer: Kafka and RabbitMQ solve overlapping but different problems. RabbitMQ is traditionally used as a message broker for task and work distribution, with rich routing and queue semantics. Kafka is designed as a distributed durable event log with partitions, replay, and very high throughput. In Kafka, consumers track offsets and can reread historical data; in a typical queue workflow, a message is acknowledged and removed from the active queue. Kafka is often a strong fit for event-driven microservices, analytics pipelines, log ingestion, and workloads where many independent consumers need the same event stream. RabbitMQ can be a better fit for fine-grained task routing, request-response messaging, and queue-centric workflows. I would choose based on delivery model, replay needs, ordering, throughput, routing complexity, and operational requirements rather than saying one is universally better.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

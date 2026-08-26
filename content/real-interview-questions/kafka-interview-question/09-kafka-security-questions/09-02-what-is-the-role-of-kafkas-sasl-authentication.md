@@ -1,0 +1,5 @@
+# 9.2. What is the role of Kafka’s SASL authentication?
+
+Answer: SASL is a framework Kafka can use for authenticating clients and brokers. Mechanisms such as SASL/SCRAM, GSSAPI, or OAuth-based approaches can be used depending on the environment. Authentication answers the question, 'Who are you?' After identity is established, authorization determines what that identity can do. In a production deployment I would pair SASL with TLS so credentials or authentication exchanges are protected in transit when appropriate, and then apply least-privilege ACLs. Credentials should be stored and rotated securely. When troubleshooting SASL failures, I check mechanism compatibility, listener configuration, JAAS or credential settings, trust and certificate configuration when TLS is also used, and whether the principal maps correctly to the expected authorization identity.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

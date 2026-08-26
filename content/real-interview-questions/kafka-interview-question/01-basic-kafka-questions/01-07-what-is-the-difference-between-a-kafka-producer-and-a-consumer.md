@@ -1,0 +1,5 @@
+# 1.7. What is the difference between a Kafka Producer and a Consumer?
+
+Answer: A Kafka producer is responsible for writing records to Kafka, while a consumer is responsible for reading records from Kafka. A producer decides which topic to publish to and, through partitioning and configuration, which partition should receive the record. It can also use batching, compression, retries, acknowledgements, and idempotence. A consumer subscribes to topics, polls records, processes them, and tracks offsets so it knows how far it has progressed. The two sides are deliberately decoupled: the producer does not need the consumer to be running at the same moment. That decoupling is one reason Kafka works well for event-driven microservices. In an interview I would also highlight that producers push records into the broker, while consumers pull records from the broker.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

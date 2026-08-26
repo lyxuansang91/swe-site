@@ -1,0 +1,5 @@
+# 1.1. What is Apache Kafka?
+
+Answer: Apache Kafka is a distributed event streaming platform used to publish, store, process, and consume streams of records at high scale. I usually explain Kafka as a durable, distributed commit log rather than just a queue. Producers write records to topics, topics are split into partitions, and brokers store those partitions. Consumers read records independently and track their offsets, so the same event can be processed by multiple consumer groups without deleting it for everyone. Kafka is especially useful when many services need to react to the same business event, when we need high throughput, replayability, fault tolerance, and loose coupling. In a microservices system, for example, an Order Service can publish an OrderCreated event and Payment, Inventory, Notification, and Analytics services can consume it independently.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.

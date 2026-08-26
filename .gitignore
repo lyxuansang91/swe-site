@@ -6,3 +6,4 @@ docs/real-interview-questions/
 .venv/
 __pycache__/
 .wrangler/
+.DS_Store

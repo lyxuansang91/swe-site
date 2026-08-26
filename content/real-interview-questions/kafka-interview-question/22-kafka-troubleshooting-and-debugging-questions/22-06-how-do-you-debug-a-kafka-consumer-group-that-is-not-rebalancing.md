@@ -1,0 +1,5 @@
+# 22.6. How do you debug a Kafka consumer group that is not rebalancing?
+
+Answer: Consumer rebalancing is the process of redistributing topic partitions among members of a consumer group when group membership or subscription changes. A rebalance can happen when a consumer joins, leaves, crashes, or when partitions or subscriptions change. The goal is to keep each partition assigned to one active member of the group while sharing the workload. Rebalances can temporarily interrupt processing, so excessive rebalancing is a production smell. Common causes include consumers taking too long between polls, unstable networking, or containers repeatedly restarting. I would monitor consumer group stability, tune poll-related settings appropriately, and ensure processing time does not violate the consumer's liveness expectations. Modern cooperative assignment strategies can reduce disruption compared with older eager rebalances.
+
+Interview close: I would make the trade-off explicit, measure it, and document the operational impact before deploying it.

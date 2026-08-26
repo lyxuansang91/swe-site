@@ -1,0 +1,5 @@
+# 1.6. What is a Consumer Group?
+
+Answer: A consumer group is a set of consumers that cooperate to consume a topic. Within one consumer group, a partition is assigned to only one consumer at a time, so the group can scale processing across instances while preserving partition ordering. Different consumer groups are independent: a payments group and an analytics group can both read the same topic and maintain their own offsets. This makes Kafka very useful for microservices because one event can fan out to many independent applications. When the group membership changes, Kafka rebalances partition assignments. A common interview point is that a single consumer group cannot actively process one partition concurrently with multiple consumers; if there are more consumers than partitions, some consumers remain idle. Therefore partition count also limits the maximum parallelism of a consumer group.
+
+Interview close: The key is to choose the Kafka behavior that matches the required durability, ordering, throughput, and recovery guarantees.
