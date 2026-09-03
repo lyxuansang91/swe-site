@@ -36,6 +36,12 @@ solution-generation tooling.
   `prepare.sh` normalises it, because only an exact `README.md` becomes a directory
   index and the chapters' raw `<img src="./images/...">` tags resolve only from that
   index URL.
+- `scripts/leetcode_titles.py` gives every LeetCode `solution.md` an `<h1>` naming
+  its problem and cross-links it with the matching `description.md`. Material's
+  search titles a page by its first `<h1>`, so solutions opening with `# Intuition`
+  were previously unreachable by problem number — searching "3876" found only the
+  description, the SUMMARY page and the README index. It rewrites only the copies
+  under `docs/`, never the submodule.
 - Math: content uses GitBook-style inline `$$O(...)$$`; rendered client-side by
   KaTeX auto-render (`docs/javascripts/katex.js`).
 

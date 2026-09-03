@@ -65,6 +65,15 @@ and its `CLAUDE.md` (repo maintenance docs don't belong on the site).
   reason.
 - MkDocs skips dot-directories, so the LeetCode submodule's `.gitbook/assets` is
   copied to `_assets/` and the links are rewritten by `sed`.
+- Material's search indexes a page under its **first `<h1>`**; the nav label and
+  front-matter `title:` are only fallbacks when a page has no h1. Most LeetCode
+  `solution.md` files open with `# Intuition` and never name their problem, which
+  made them unfindable by number. `scripts/leetcode_titles.py` fixes this at build
+  time: it demotes the existing headings, prepends an h1 from the SUMMARY label
+  (falling back to the folder name), and cross-links `description.md`
+  and `solution.md`. It edits only `docs/`, so the submodule and its GitBook
+  publication are untouched. It must skip `#` lines inside code fences — hence a
+  Python parser rather than `sed`.
 - `content/system-design/` is a **vendored** copy of our fork of the third-party
   [liquidslr/system-design-notes](https://github.com/liquidslr/system-design-notes).
   `gh repo sync` on the fork no longer reaches the site by itself; upstream changes

@@ -55,6 +55,11 @@ if [ -d "$lc_src/.gitbook/assets" ]; then
       done
 fi
 
+# Material's search plugin titles a page by its first h1, so a solution.md opening
+# with `# Intuition` is unreachable by problem number. Give each one an h1 naming
+# its problem, and cross-link description <-> solution.
+python3 scripts/leetcode_titles.py docs/leetcode "$lc_src/SUMMARY.md"
+
 python3 scripts/convert_summary.py "$lc_src/SUMMARY.md" > docs/leetcode/SUMMARY.md
 
 # --- SWE section: everything except repo plumbing --------------------------
